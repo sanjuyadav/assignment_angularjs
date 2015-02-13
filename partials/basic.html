@@ -1,0 +1,21 @@
+
+<div id="formblock" ng-controller = "usercontroller">
+	<form ng-submit="submitUser(userInfo)">
+		<div ng-model="userInfo">
+			<p>
+				<label for="name">Name</label>
+				<input type="text" name="title" ng-model="userInfo.name"/>
+			</p>
+			<p>
+				<label for="email">Email</label>
+				<input type="text" name="email" ng-model="userInfo.email"/>
+			</p>
+			<p>
+				<input type="submit" value="AddUser"/>
+			</p>
+		</div>
+	</form>
+	<pre> {{users | json}}</pre>
+</div>
+
+
