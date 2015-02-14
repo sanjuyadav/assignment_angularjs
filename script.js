@@ -54,7 +54,10 @@ var shuffleArray = function(array) {
   return array;
 }
 
+
+
 app.controller('advanceController', function($scope,$http,$filter){
+	$scope.selection=[];
 	$scope.names=[];
 	$scope.dnumber;
 	$scope.mydata=false;
@@ -66,8 +69,31 @@ app.controller('advanceController', function($scope,$http,$filter){
 		$scope.names=response;
 		$scope.mydata=true;
 		$scope.names.length = $scope.dnumber;
-		$scope.names = $filter('orderBy')($scope.names, parseInt("userId"));
+	    $scope.selection=angular.copy($scope.names);
 	});
+	}
+	$scope.toggle=function(userid){
+		var notPresent = 0;
+		for(var i = 0; i < $scope.selection.length;i++)
+		{
+			if( $scope.selection[i].userId == userid )
+			{
+				$scope.selection.splice(i,1);
+				i--;
+				notPresent = 1;
+			}
+		}
+
+		// if( notPresent == 1 )
+		// {
+		// 	for(var i = 0; i < $scope.names.length;i++)
+		// 	{
+		// 		if( $scope.names[i].userId == userid )
+		// 		{
+		// 			$scope.selection.push($scope.names[i]);
+		// 		}
+		// 	}
+		// }
 	}
 });
 

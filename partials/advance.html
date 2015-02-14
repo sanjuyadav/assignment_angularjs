@@ -2,8 +2,13 @@
 	<input type="text" ng-model="dnumber"/>
 	<button ng-click="fetch()">Fetch</button>
 	<div ng-show="mydata">
+			UserId: <span ng-repeat="(key, value) in names | groupBy: 'userId'" >
+				<label for="{{ key }}">{{ key }}</label>
+				<input type="checkbox" value="{{key}}" ng-checked="true" ng-click="toggle(key)"/>
+			</span>
+
 		<ul>
-		  <li ng-repeat="(key, value) in names | groupBy: 'userId'">
+		  <li ng-repeat="(key, value) in selection | groupBy: 'userId'">
 		    UserId: {{ key }}
 		    <ul>
 		      <li ng-repeat="text in value">
@@ -12,6 +17,6 @@
 		      </li>
 		    </ul>
 		  </li>
-		</ul>
+		</ul> 
 	</div>
 </div>
