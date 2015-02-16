@@ -1,21 +1,34 @@
 
-<div id="formblock" ng-controller = "usercontroller">
-	<form ng-submit="submitUser(userInfo)">
-		<div ng-model="userInfo">
-			<p>
-				<label for="name">Name</label>
-				<input type="text" name="title" ng-model="userInfo.name"/>
-			</p>
-			<p>
-				<label for="email">Email</label>
-				<input type="text" name="email" ng-model="userInfo.email"/>
-			</p>
-			<p>
-				<input type="submit" value="AddUser"/>
-			</p>
-		</div>
-	</form>
-	<pre> {{users | json}}</pre>
+<div ng-controller="UserController">
+    <div ng-model="UserInfo">
+    	<div ng-show='true'>
+    		<button ng-click="toggle()">ADD</button></br></br></br>
+    	</div>
+    	<div ng-show="myform">    		
+	    	<form ng-submit="add(UserInfo)">
+                <p>
+    	    		Name:<input type="text" ng-model="UserInfo.name" />
+    	    	</p>
+    	    	<p>
+    	    		Email:<input type="text" ng-model="UserInfo.email" />
+    	    		<input type="submit" value="Add User">
+                </p>
+            </form></br></br></br>
+	    </div>
+    	
+    	<table border="5" ng-show="mydataBasic">
+    		<tr>
+    			<th>Id</th>
+    			<th>Name</th>
+    			<th>Email</th>
+    		</tr>
+    		<tr ng-repeat="user in users">
+    			<td>{{index = users.indexOf(user)+1}}</td>
+    			<td>{{user.name}}</td>
+    			<td>{{user.email}}</td>
+    			<td><button ng-click="edit(user.name,user.email,users.indexOf(user))">Edit</button></td>
+    			<td><button ng-click="delete(index-1)">Delete</button></td>
+    		</tr>
+    	</table>
+    </div>
 </div>
-
-
