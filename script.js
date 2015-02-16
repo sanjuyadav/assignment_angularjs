@@ -5,37 +5,65 @@ app.config(['$routeProvider',
 	function($routeProvider){
 	$routeProvider.
 	when('/basic',{
-		templateUrl: 'basic.html'
+		templateUrl: 'partials/basic.html',
+		controller: 'UserController',
+		reloadOnSearch: false
 	}).
 	when('/advance',{
-		templateUrl: 'partials/advance.html'
+		templateUrl: 'partials/advance.html',
+		controller: 'advanceController'
 	});
 }]);
 
+//global variables
+app.run(function ($rootScope) {
+    $rootScope.users = []; 
+    $rootScope.mydataBasic = false;
+    $rootScope.selection=[];
+    $rootScope.names=[];
+    $rootScope.mydataAdvance=false;
+});
 
-app.controller('UserController', function($scope){
-	$scope.users = [];
+//basic controller
+app.controller('UserController', function($scope,$rootScope){
 	$scope.myform=false;
 	$scope.myindex=-1;
-	$scope.mydata=false;
-	$scope.add = function() {
-        $scope.users.push($scope.UserInfo);
-		$scope.UserInfo = "";
+	
+	//add new user
+	$scope.add = function(user) {
+		var user = angular.copy(user);
+		if( $scope.myindex == -1 )
+        {
+        	$rootScope.users.push(user);
+        }
+        else
+        {
+        	$rootScope.users[$scope.myindex].name = user.name;
+        	$rootScope.users[$scope.myindex].email = user.email;
+        	$scope.myindex = -1;
+        }
+		$scope.user.name = "";
+		$scope.user.email = "";
 		$scope.myform = !$scope.myform;
-		$scope.mydata = true;
+		$rootScope.mydataBasic = true;
     }
 
     $scope.delete=function(index) {
-        $scope.users.splice(index,1);
+        $rootScope.users.splice(index,1);
+        if($rootScope.users.length == 0 )
+        {
+        	$rootScope.mydataBasic = false;
+        }
     }
+    
     $scope.toggle=function(){
     	$scope.myform = !$scope.myform;
     }
-    $scope.edit=function(user){
+    $scope.edit=function(name,email,index){
     	$scope.myform = !$scope.myform;
-    	$scope.name=user.name;
-    	$scope.email=user.email;
-    	$scope.myindex=$scope.users.indexOf(user);
+    	$scope.user.name=name;
+    	$scope.user.email=email;
+    	$scope.myindex=index;
     }
 });
 
@@ -55,45 +83,42 @@ var shuffleArray = function(array) {
 }
 
 
-
-app.controller('advanceController', function($scope,$http,$filter){
-	$scope.selection=[];
-	$scope.names=[];
+//advance controller
+app.controller('advanceController', function($scope,$http,$filter,$rootScope){
 	$scope.dnumber;
-	$scope.mydata=false;
 	
 	$scope.fetch=function(){
 		$scope.dnumber=$scope.dnumber
 		$http.get("http://jsonplaceholder.typicode.com/posts/").success(function(response){
 		shuffleArray(response);
-		$scope.names=response;
-		$scope.mydata=true;
-		$scope.names.length = $scope.dnumber;
-	    $scope.selection=angular.copy($scope.names);
+		$rootScope.names=response;
+		$rootScope.mydataAdvance=true;
+		$rootScope.names.length = $scope.dnumber;
+	    $rootScope.selection=angular.copy($rootScope.names);
 	});
 	}
-	$scope.toggle=function(userid){
+	$scope.adddelete=function(userid){
 		var notPresent = 0;
-		for(var i = 0; i < $scope.selection.length;i++)
+		for(var i = 0; i < $rootScope.selection.length;i++)
 		{
-			if( $scope.selection[i].userId == userid )
+			if( $rootScope.selection[i].userId == userid )
 			{
-				$scope.selection.splice(i,1);
+				$rootScope.selection.splice(i,1);
 				i--;
 				notPresent = 1;
 			}
 		}
 
-		// if( notPresent == 1 )
-		// {
-		// 	for(var i = 0; i < $scope.names.length;i++)
-		// 	{
-		// 		if( $scope.names[i].userId == userid )
-		// 		{
-		// 			$scope.selection.push($scope.names[i]);
-		// 		}
-		// 	}
-		// }
+		if( notPresent == 0 )
+		{
+			for(var i = 0; i < $rootScope.names.length;i++)
+			{
+				if( $rootScope.names[i].userId == userid )
+				{
+					$rootScope.selection.push($rootScope.names[i]);
+				}
+			}
+		}
 	}
 });
 

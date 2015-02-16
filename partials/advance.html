@@ -1,19 +1,23 @@
 <div ng-controller="advanceController">
-	<input type="text" ng-model="dnumber"/>
-	<button ng-click="fetch()">Fetch</button>
-	<div ng-show="mydata">
+	<form name = "myform" ng-submit="fetch()">
+		<input type="number" name="input" ng-model="dnumber" min="0" required />
+		<span ng-show="myform.dnumber.$error.required">Required!</span>
+		<span ng-show="myForm.dnumber.$error.integer">Not valid number!</span>
+		<input type="submit" value="fetch">
+	</form>
+	<div ng-show="mydataAdvance">
 			UserId: <span ng-repeat="(key, value) in names | groupBy: 'userId'" >
 				<label for="{{ key }}">{{ key }}</label>
-				<input type="checkbox" value="{{key}}" ng-checked="true" ng-click="toggle(key)"/>
+				<input type="checkbox" value="{{key}}" ng-checked="true" ng-click="adddelete(key)"/>
 			</span>
-
+		<input ng-model="search" placeholder="search"/></br>
 		<ul>
 		  <li ng-repeat="(key, value) in selection | groupBy: 'userId'">
 		    UserId: {{ key }}
 		    <ul>
-		      <li ng-repeat="text in value">
-		        <p>Title: {{text.title}}</p>
-				<p>Body: {{text.body}}</p>
+		      <li ng-repeat="text in value | filter:search">
+		        <p>Title: {{text.title }}</p>
+				<p>Body: {{text.body | limitTo:100 }}</p>
 		      </li>
 		    </ul>
 		  </li>

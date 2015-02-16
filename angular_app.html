@@ -2,16 +2,20 @@
 <html>
 <head>
 	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="angular.min.js"></script>
 	<script type="text/javascript" src="angular-route.min.js"></script>
 	<script src="angular-filter.js"></script>
   	<script type="text/javascript" src="script.js"></script>
 </head>
 <body ng-app="angularapp">
-	<p>
-		<a href="#basic">Basic</a>
-		<a href="#advance">Advance</a> 
-	</p>
-	<div ng-view></div>
+	<div id="center" >
+
+		<p>
+			<a href="#basic">Basic</a>
+			<a href="#advance">Advance</a> 
+		</p>
+		<div ng-view></div>
+	</div>
 </body>
 </html>
