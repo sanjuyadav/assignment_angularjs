@@ -20,7 +20,7 @@ app.run(function ($rootScope) {
     $rootScope.users = []; 
     $rootScope.mydataBasic = false;
     $rootScope.selection=[];
-    $rootScope.names=[];
+    $rootScope.filterData=[];
     $rootScope.mydataAdvance=false;
 });
 
@@ -28,6 +28,7 @@ app.run(function ($rootScope) {
 app.controller('UserController', function($scope,$rootScope){
 	$scope.myform=false;
 	$scope.myindex=-1;
+	$scope.submittext="add user";
 	
 	//add new user
 	$scope.add = function(user) {
@@ -46,6 +47,7 @@ app.controller('UserController', function($scope,$rootScope){
 		$scope.user.email = "";
 		$scope.myform = !$scope.myform;
 		$rootScope.mydataBasic = true;
+		$scope.submittext="add user";
     }
 
     $scope.delete=function(index) {
@@ -60,7 +62,9 @@ app.controller('UserController', function($scope,$rootScope){
     	$scope.myform = !$scope.myform;
     }
     $scope.edit=function(name,email,index){
-    	$scope.myform = !$scope.myform;
+    	$scope.submittext="edit user";
+    	if( !$scope.myform )
+    		$scope.myform = !$scope.myform;
     	$scope.user.name=name;
     	$scope.user.email=email;
     	$scope.myindex=index;
@@ -82,21 +86,33 @@ var shuffleArray = function(array) {
   return array;
 }
 
+app.factory('getData',function($http){
+	var service = {};
+
+	service.async = function(){
+		return $http.get("http://jsonplaceholder.typicode.com/posts/").then(function(response){
+			return response;
+		});
+	};
+	return service;
+});
 
 //advance controller
-app.controller('advanceController', function($scope,$http,$filter,$rootScope){
+app.controller('advanceController',function($scope,getData,$filter,$rootScope){
 	$scope.dnumber;
 	
 	$scope.fetch=function(){
-		$scope.dnumber=$scope.dnumber
-		$http.get("http://jsonplaceholder.typicode.com/posts/").success(function(response){
-		shuffleArray(response);
-		$rootScope.names=response;
-		$rootScope.mydataAdvance=true;
-		$rootScope.names.length = $scope.dnumber;
-	    $rootScope.selection=angular.copy($rootScope.names);
-	});
+		$scope.dnumber=$scope.dnumber;
+		response = getData.async().then(function(response){
+			response = response.data;
+			shuffleArray(response);
+			$rootScope.filterData = response;
+			$rootScope.filterData.length = $scope.dnumber;
+			$rootScope.selection = angular.copy($rootScope.filterData);
+			$rootScope.mydataAdvance = true;
+		});
 	}
+
 	$scope.adddelete=function(userid){
 		var notPresent = 0;
 		for(var i = 0; i < $rootScope.selection.length;i++)
@@ -111,11 +127,11 @@ app.controller('advanceController', function($scope,$http,$filter,$rootScope){
 
 		if( notPresent == 0 )
 		{
-			for(var i = 0; i < $rootScope.names.length;i++)
+			for(var i = 0; i < $rootScope.filterData.length;i++)
 			{
-				if( $rootScope.names[i].userId == userid )
+				if( $rootScope.filterData[i].userId == userid )
 				{
-					$rootScope.selection.push($rootScope.names[i]);
+					$rootScope.selection.push($rootScope.filterData[i]);
 				}
 			}
 		}

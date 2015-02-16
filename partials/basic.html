@@ -11,7 +11,7 @@
     	    	</p>
     	    	<p>
     	    		Email:<input type="text" ng-model="user.email" />
-    	    		<input type="submit" value="Add User">
+    	    		<input type="submit" value="{{ submittext }}">
                 </p>
             </form></br></br></br>
 	    </div>
@@ -23,9 +23,9 @@
     			<th>Email</th>
     		</tr>
     		<tr ng-repeat="user in users">
-    			<td>{{index = users.indexOf(user)+1}}</td>
-    			<td>{{user.name}}</td>
-    			<td>{{user.email}}</td>
+    			<td ng-bind="index = users.indexOf(user)+1"></td>
+    			<td ng-bind="user.name"></td>
+    			<td ng-bind="user.email"></td>
     			<td><button ng-click="edit(user.name,user.email,users.indexOf(user))">Edit</button></td>
     			<td><button ng-click="delete(index-1)">Delete</button></td>
     		</tr>
