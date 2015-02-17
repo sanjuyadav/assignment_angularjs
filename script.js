@@ -1,5 +1,5 @@
 
-var app = angular.module('angularapp', ['ngRoute','angular.filter']);
+var app = angular.module('angularapp', ['ngRoute',"ngMessages",'angular.filter']);
 
 app.config(['$routeProvider',
 	function($routeProvider){

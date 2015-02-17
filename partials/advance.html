@@ -1,12 +1,14 @@
 <div ng-controller="advanceController">
 	<form name = "myform" ng-submit="fetch()">
 		<input type="number" name="input" ng-model="dnumber" min="0" required />
-		<span ng-show="myform.dnumber.$error.required">Required!</span>
-		<span ng-show="myForm.dnumber.$error.integer">Not valid number!</span>
 		<input type="submit" value="fetch">
+		<div style="color:red" ng-messages="myform.input.$error" ng-if="myform.input.$invalid">
+			<div ng-message="required">Please enter some value</div>
+			<div ng-message="number">Please enter a number</div>
+		</div>
 	</form>
 	<div ng-show="mydataAdvance">
-		<div id="checkbox">
+		<div id="checkbox" ng-show="filterData.length>0">
 			UserId: <span ng-repeat="(key, value) in filterData | groupBy: 'userId'" >
 				{{ key }}<input type="checkbox" ng-checked="true" ng-click="adddelete(key)"/>
 			</span>
@@ -18,10 +20,13 @@
 		    <ul>
 		      <li ng-repeat="text in value | filter:search">
 		        Title: <p ng-bind="text.title"></p>
-				Body: <p ng-bind="text.body | limitTo:100"></p>
+				<p>Body: </p>
+				<p class="pbody" ng-show="text.body.length > 100" ng-bind="text.body | limitTo:100"><p class="dots">..........</p></p>
+				<p class="pbody" ng-show="text.body.length <= 100" ng-bind="text.body">
 		      </li>
 		    </ul>
 		  </li>
 		</ul> 
 	</div>
 </div>
+

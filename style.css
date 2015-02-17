@@ -18,3 +18,9 @@ div#checkbox {
 margin-top: 20px;
 margin-bottom: 20px;
 }
+.pbody {
+	display: inline;
+}
+.dots {
+	display: inline;
+}
