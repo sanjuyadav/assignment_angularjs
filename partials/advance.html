@@ -6,11 +6,12 @@
 		<input type="submit" value="fetch">
 	</form>
 	<div ng-show="mydataAdvance">
+		<div id="checkbox">
 			UserId: <span ng-repeat="(key, value) in filterData | groupBy: 'userId'" >
-				<label for="{{ key }}">{{ key }}</label>
-				<input type="checkbox" value="{{key}}" ng-checked="true" ng-click="adddelete(key)"/>
+				{{ key }}<input type="checkbox" ng-checked="true" ng-click="adddelete(key)"/>
 			</span>
-		<input ng-model="search" placeholder="search"/></br>
+			<input ng-model="search" placeholder="search"/></br>
+		</div>
 		<ul>
 		  <li ng-repeat="(key, value) in selection | groupBy: 'userId'">
 		    UserId: {{ key }}

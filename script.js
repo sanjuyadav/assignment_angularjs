@@ -26,6 +26,7 @@ app.run(function ($rootScope) {
 
 //basic controller
 app.controller('UserController', function($scope,$rootScope){
+	$scope.user={name:'',email:''};
 	$scope.myform=false;
 	$scope.myindex=-1;
 	$scope.submittext="add user";
@@ -62,12 +63,15 @@ app.controller('UserController', function($scope,$rootScope){
     	$scope.myform = !$scope.myform;
     }
     $scope.edit=function(name,email,index){
+    	scope: false;
     	$scope.submittext="edit user";
+    	$scope.myindex=index;
+    	console.log(name,email,$scope.user.name);
     	if( !$scope.myform )
     		$scope.myform = !$scope.myform;
     	$scope.user.name=name;
     	$scope.user.email=email;
-    	$scope.myindex=index;
+    	
     }
 });
 
@@ -87,14 +91,14 @@ var shuffleArray = function(array) {
 }
 
 app.factory('getData',function($http){
-	var service = {};
 
-	service.async = function(){
+	return {
+	getFilterData: function(){
 		return $http.get("http://jsonplaceholder.typicode.com/posts/").then(function(response){
 			return response;
-		});
+		})
+	}
 	};
-	return service;
 });
 
 //advance controller
@@ -103,13 +107,15 @@ app.controller('advanceController',function($scope,getData,$filter,$rootScope){
 	
 	$scope.fetch=function(){
 		$scope.dnumber=$scope.dnumber;
-		response = getData.async().then(function(response){
-			response = response.data;
-			shuffleArray(response);
-			$rootScope.filterData = response;
+		$rootScope.filterData=[];
+		$rootScope.selection=[]
+		getData.getFilterData().then(function(response){
+			$rootScope.filterData = response.data;
+			shuffleArray($rootScope.filterData);
+			$rootScope.mydataAdvance = true;
 			$rootScope.filterData.length = $scope.dnumber;
 			$rootScope.selection = angular.copy($rootScope.filterData);
-			$rootScope.mydataAdvance = true;
+			console.log("sanju",$rootScope.selection,$rootScope.filterData);
 		});
 	}
 

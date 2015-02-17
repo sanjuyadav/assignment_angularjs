@@ -1,6 +1,5 @@
 
 <div ng-controller="UserController">
-    
     	<div ng-show='true'>
     		<button ng-click="toggle()">ADD</button></br></br></br>
     	</div>
@@ -22,13 +21,12 @@
     			<th>Name</th>
     			<th>Email</th>
     		</tr>
-    		<tr ng-repeat="user in users">
-    			<td ng-bind="index = users.indexOf(user)+1"></td>
-    			<td ng-bind="user.name"></td>
-    			<td ng-bind="user.email"></td>
-    			<td><button ng-click="edit(user.name,user.email,users.indexOf(user))">Edit</button></td>
+    		<tr ng-repeat="user1 in users">
+    			<td ng-bind="index = users.indexOf(user1)+1"></td>
+    			<td ng-bind="user1.name"></td>
+    			<td ng-bind="user1.email"></td>
+    			<td><button ng-click="edit(user1.name,user1.email,users.indexOf(user1),this)">Edit</button></td>
     			<td><button ng-click="delete(index-1)">Delete</button></td>
     		</tr>
     	</table>
-   
 </div>
