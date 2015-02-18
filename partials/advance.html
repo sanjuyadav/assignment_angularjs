@@ -2,9 +2,9 @@
 	<form name = "myform" ng-submit="fetch()">
 		<input type="number" name="input" ng-model="dnumber" min="0" required />
 		<input type="submit" value="fetch">
-		<div style="color:red" ng-messages="myform.input.$error" ng-if="myform.input.$invalid">
-			<div ng-message="required">Please enter some value</div>
-			<div ng-message="number">Please enter a number</div>
+		<div style="color:red" ng-show="myform.input.$error && myform.input.$invalid">
+			<div ng-show="myform.input.$error.required">Please enter some value</div>
+			<div ng-show="myform.input.$error.number">Please enter a number</div>
 		</div>
 	</form>
 	<div ng-show="mydataAdvance">

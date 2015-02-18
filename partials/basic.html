@@ -4,21 +4,19 @@
     		<button ng-click="toggle()">ADD</button></br></br></br>
     	</div>
     	<div ng-show="myform">    		
-	    	<form name="AddForm" ng-submit="add(user)">
+	    	<form name="AddForm" ng-submit="add(user)" novalidate>
                 <p>
-    	    		Name:<input type="text" name="name" ng-model="user.name" required=""/>
-                    <snap style="color:red" ng-messages="AddForm.name.$error" ng-if="AddForm.name.$invalid">
-                        <snap ng-message="required">Username is required</snap>
-                    </snap>
+    	    		Name:<input type="text" name="name" ng-model="user.name"/>
                 </p>
-    	    	<p>
-    	    		Email:<input type="text" name="email" ng-model="user.email" required="" />
-                    <snap style="color:red" ng-messages="AddForm.email.$error" ng-if="AddForm.email.$invalid">
-                        <snap ng-message="required">Email is required</snap>
-                    </snap>
-                </p>
-                <input type="submit" value="{{ submittext }}">
+                <p style="color:red" ng-show="error">Username can not be blank</p>
                 
+    	    	<p>
+    	    		Email:<input type="text" name="email" ng-model="user.email" />
+                </p>
+                <p style="color:red" ng-show="error">Email can not be blank</p>
+                <p>
+                    <input type="submit" value="{{ submittext }}">
+                </p>
             </form></br></br></br>
 	    </div>
     	
